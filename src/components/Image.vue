@@ -58,6 +58,7 @@ export default {
   },
   mounted() {
     const self = this
+    this.focus('image', this.index)
     $("input[name='isCropMode']").bootstrapSwitch({
       onText: '縮放圖片',
       offText: '裁切圖片',

@@ -52,16 +52,21 @@ export default {
         bottomLeft = anchorGroup.get('.bottomLeft')[0],
         bottomRight = anchorGroup.get('.bottomRight')[0]
       // change image x or y, width, height
+      console.log(image.position(), image.size(), image.getClientRect())
       image[type](v)
+      console.log(image.position(), image.size(), image.getClientRect())
+      const
+        width = image.getClientRect().width,
+        height = image.getClientRect().height
       // change anchors position
       topLeft.position(image.position())
-      topRight.x(image.x() + image.width())
+      topRight.x(image.x() + width)
       topRight.y(image.y())
       bottomLeft.x(image.x())
-      bottomLeft.y(image.y() + image.height())
-      bottomRight.x(image.x() + image.width())
-      bottomRight.y(image.y() + image.height())
-      imageGroup.getParent().draw()
+      bottomLeft.y(image.y() + height)
+      bottomRight.x(image.x() + width)
+      bottomRight.y(image.y() + height)
+      this.stage.draw()
     },
     changeMode(action, i) {
       const image = this.images[i]
@@ -119,8 +124,10 @@ export default {
         imgLayer = image.getParent(),
         anchorGroup = imgLayer.get('.anchorGroup')[0]
       imgLayer.moveToTop()
+      this.images.forEach((image, i) => this.blur('image', i))
+      this.texts.forEach((text, i) => this.blur('text', i))
       anchorGroup.show()
-      imgLayer.draw()
+      this.stage.draw()
     },
     blur(type, i) {
       if (type === 'text')
@@ -129,8 +136,9 @@ export default {
         image = this.images[i],
         imgLayer = image.getParent(),
         anchorGroup = imgLayer.get('.anchorGroup')[0]
+      this.texts.forEach((text, i) => this.focus('text', i))
       anchorGroup.hide()
-      imgLayer.draw()
+      this.stage.draw()
     }
   },
   mounted() {
@@ -225,10 +233,6 @@ export default {
               scaleHeight = resizeHeight / height
             image.scaleX(scaleWidth)
             image.scaleY(scaleHeight)
-            image.oriPosition = {
-              x: topLeft.x() - image.cropX() * image.scaleX(),
-              y: topLeft.y() - image.cropY() * image.scaleY()
-            }
             image.position(topLeft.position())
           } else if (mode === 'crop') {
             if (!image.oriPosition)
@@ -253,6 +257,10 @@ export default {
             image.width(cropScaledWidth)
             image.height(cropScaledHeight)
             image.position(topLeft.position())
+            image.oriPosition = {
+              x: topLeft.x() - image.cropX() * image.scaleX(),
+              y: topLeft.y() - image.cropY() * image.scaleY()
+            }
           } else {
             console.warn('Unknown mode.')
           }
@@ -321,7 +329,7 @@ export default {
               name: 'imageGroup',
               x: 0,
               y: 0,
-              // draggable: true
+              draggable: true
             })
             const anchorGroup = new Konva.Group({
               name: 'anchorGroup',
