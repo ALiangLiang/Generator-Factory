@@ -52,9 +52,11 @@ export default {
         bottomLeft = anchorGroup.get('.bottomLeft')[0],
         bottomRight = anchorGroup.get('.bottomRight')[0]
       // change image x or y, width, height
-      console.log(image.position(), image.size(), image.getClientRect())
+      if (type === 'width')
+        v = v / image.scaleX()
+      if (type === 'height')
+        v = v / image.scaleY()
       image[type](v)
-      console.log(image.position(), image.size(), image.getClientRect())
       const
         width = image.getClientRect().width,
         height = image.getClientRect().height
@@ -202,27 +204,6 @@ export default {
             imageGroup = group.getParent(),
             image = imageGroup.get('Image')[0],
             mode = image.mode || 'resize'
-          let
-            anchorX = activeAnchor.getX(),
-            anchorY = activeAnchor.getY()
-          switch (activeAnchor.getName()) {
-            case 'topLeft':
-              topRight.setY(anchorY)
-              bottomLeft.setX(anchorX)
-              break
-            case 'topRight':
-              topLeft.setY(anchorY)
-              bottomRight.setX(anchorX)
-              break
-            case 'bottomRight':
-              bottomLeft.setY(anchorY)
-              topRight.setX(anchorX)
-              break
-            case 'bottomLeft':
-              bottomRight.setY(anchorY)
-              topLeft.setX(anchorX)
-              break
-          }
           if (mode === 'resize') {
             const
               width = image.width(),
@@ -236,7 +217,10 @@ export default {
             image.position(topLeft.position())
           } else if (mode === 'crop') {
             if (!image.oriPosition)
-              image.oriPosition = image.position()
+              image.oriPosition = {
+                x: topLeft.x() - image.cropX() * image.scaleX(),
+                y: topLeft.y() - image.cropY() * image.scaleY()
+              }
             const
               x = topLeft.x() - image.oriPosition.x,
               y = topLeft.y() - image.oriPosition.y,
@@ -257,10 +241,6 @@ export default {
             image.width(cropScaledWidth)
             image.height(cropScaledHeight)
             image.position(topLeft.position())
-            image.oriPosition = {
-              x: topLeft.x() - image.cropX() * image.scaleX(),
-              y: topLeft.y() - image.cropY() * image.scaleY()
-            }
           } else {
             console.warn('Unknown mode.')
           }
@@ -280,19 +260,28 @@ export default {
         })
         anchor.on('dragmove', function() {
           update(this)
+          this.getParent().updateAnchors(this)
           layer.draw()
         })
         anchor.on('mousedown touchstart', function() {
           group.setDraggable(false)
           this.moveToTop()
         })
+        anchor.on('dragstart', function() {
+          const
+            anchorGroup = anchor.getParent(),
+            topLeft = anchorGroup.get('.topLeft')[0],
+            image = anchorGroup.getParent().get('Image')[0]
+          image.oriPosition = {
+            x: topLeft.x() - image.cropX() * image.scaleX(),
+            y: topLeft.y() - image.cropY() * image.scaleY()
+          }
+        })
         anchor.on('dragend', function() {
-          // const
-          //   anchorGroup = anchor.getParent(),
-          //   image = anchorGroup.getParent().get('Image')[0],
-          //   topLeft = anchorGroup.get('.topLeft')[0]
-          // image.x(topLeft.x())
-          // image.y(topLeft.y())
+          const
+            anchorGroup = anchor.getParent(),
+            image = anchorGroup.getParent().get('Image')[0]
+          image.oriPosition = void 0
           group.setDraggable(true)
           layer.draw()
         })
@@ -328,14 +317,52 @@ export default {
             const imageGroup = new Konva.Group({
               name: 'imageGroup',
               x: 0,
-              y: 0,
-              draggable: true
+              y: 0
             })
             const anchorGroup = new Konva.Group({
               name: 'anchorGroup',
               x: 0,
               y: 0
             })
+            anchorGroup.updateAnchors = function(activeAnchor) {
+              const
+                image = this.getParent().get('Image')[0],
+                topLeft = this.get('.topLeft')[0],
+                topRight = this.get('.topRight')[0],
+                bottomRight = this.get('.bottomRight')[0],
+                bottomLeft = this.get('.bottomLeft')[0]
+              if (activeAnchor) {
+                let
+                  anchorX = activeAnchor.getX(),
+                  anchorY = activeAnchor.getY()
+                switch (activeAnchor.getName()) {
+                  case 'topLeft':
+                    topRight.setY(anchorY)
+                    bottomLeft.setX(anchorX)
+                    break
+                  case 'topRight':
+                    topLeft.setY(anchorY)
+                    bottomRight.setX(anchorX)
+                    break
+                  case 'bottomRight':
+                    bottomLeft.setY(anchorY)
+                    topRight.setX(anchorX)
+                    break
+                  case 'bottomLeft':
+                    bottomRight.setY(anchorY)
+                    topLeft.setX(anchorX)
+                    break
+                }
+              } else {
+                topLeft.position(image.position())
+                bottomRight.x(image.x() + image.width() * image.scaleX())
+                bottomRight.y(image.y() + image.height() * image.scaleY())
+                topRight.x(bottomRight.x())
+                topRight.y(image.y())
+                bottomLeft.x(image.x())
+                bottomLeft.y(bottomRight.y())
+              }
+            }
             imageLayer.add(imageGroup)
             stage.add(imageLayer)
             const
@@ -346,7 +373,11 @@ export default {
               height = imageObj.height * scale
             const image = new Konva.Image({
               scaleX: scale,
-              scaleY: scale
+              scaleY: scale,
+              draggable: true
+            })
+            image.on('dragmove', function() {
+              this.getParent().get('.anchorGroup')[0].updateAnchors()
             })
             image.image(imageObj)
             imageGroup.add(image)
@@ -547,7 +578,6 @@ export default {
           fontFamily: 'Calibri',
           fill: 'green'
         })
-        console.log(text.width(), text.height())
         const rect = new Konva.Rect({
           x: 0,
           y: 0,
