@@ -103,9 +103,12 @@ export default {
   },
   methods: {
     change(type, v) {
-      console.log(type, v, typeof v)
       this.text[type](v)
       this.text.getStage().draw()
+      this.src = this.text.toDataURL({
+        x: this.text.x(),
+        y: this.text.y(),
+      })
     }
   },
   mounted() {}
