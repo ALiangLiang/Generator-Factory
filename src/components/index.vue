@@ -1,10 +1,7 @@
 <template>
 <div class="hello">
   <h1>{{ msg }}</h1>
-  <div id="dropzone" class="dropzone" @dragover="dragover" @drop="dropFile" @click="uploadFile">請將底圖拖曳進來XD</div>
-  <a type="button" href="#/manufacture" class="btn btn-primary">
-    <i class="material-icons">send</i>開始製作
-  </a>
+  <input type="file" class="dropify" data-height="300" @change="loadFile" />
 </div>
 </template>
 
@@ -17,32 +14,11 @@ export default {
     }
   },
   methods: {
-    dragover(e) {
-      e.stopPropagation()
-      e.preventDefault()
-      e.dataTransfer.dropEffect = 'copy'
-    },
-    dropFile(e) {
-      e.stopPropagation()
-      e.preventDefault()
-      const files = e.dataTransfer.files
+    loadFile(e) {
+      const files = e.target.files
       if (files.length !== 1)
         return
-      this.loadFile(files[0])
-    },
-    uploadFile() {
-      const input = document.createElement('input')
-      input.type = 'file'
-      input.accept = 'image/*'
-      input.click()
-      input.onchange = () => {
-        const files = input.files
-        if (files.length !== 1)
-          return
-        this.loadFile(files[0])
-      }
-    },
-    loadFile(file) {
+      const file = files[0]
       if (file.type.match(/image.*/)) {
         var reader = new FileReader();
 
@@ -58,12 +34,28 @@ export default {
 
         reader.readAsDataURL(file)
       }
-    },
-    mounted() {}
+    }
+  },
+  mounted() {
+    $('.dropify').dropify({
+      messages: {
+        'default': '請將底圖拖曳進來哦~ 或是點它上傳',
+        'replace': 'Drag and drop or click to replace',
+        'remove': '移除',
+        'error': '阿哩? 好像出了點錯誤'
+      }
+    });
   }
 }
 </script>
 
 <style scoped>
-
+.dropzone {
+  margin: auto;
+  height: 500px;
+  width: 50%;
+  border: black;
+  border-width: 2px;
+  border-style: dashed;
+}
 </style>

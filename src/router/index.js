@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import VueMaterial from 'vue-material'
 import index from '@/components/index'
 import Manufacture from '@/components/manufacture'
 import Generator from '@/components/generator'
+import Product from '@/components/product'
 
 Vue.use(Router)
+Vue.use(VueMaterial)
 
 export default new Router({
   routes: [{
@@ -24,6 +27,11 @@ export default new Router({
     path: '/generator',
     name: 'Generator',
     component: Generator
+  },
+  {
+    path: '/product',
+    name: 'Product',
+    component: Product
   }
   ]
 })

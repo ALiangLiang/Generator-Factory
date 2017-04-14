@@ -2,22 +2,24 @@
 <div class="manufacture">
   <div id="container"></div>
 
-  <button id="createTextboxBtn" type="button" class="btn btn-primary" @click="createTextbox">
-    <i class="material-icons">text_fields</i>新增文字方塊
-  </button>
+  <md-button class="md-raised md-primary" @click.native="createTextbox">
+    <md-icon @click="createTextbox">text_fields</md-icon>新增文字方塊
+  </md-button>
 
-  <button id="createGenerator" type="button" class="btn btn-success" @click="createGenerator">
-    <i class="material-icons">build</i>製造產生器
-  </button>
+  <md-button class="md-raised md-primary" @click.native="createGenerator">
+    <md-icon>build</md-icon>製造產生器
+  </md-button>
 
-  <!-- <label for="width">寬度</label>
-  <input id="width" class="form-control" type="text"> -->
+  <md-input-container>
+    <label>縮放</label>
+    <md-input type="number" v-model="scaleRate" @input="scale"></md-input>
+  </md-input-container>
 
-  <div id="setting-list">
-    <div class="row">
-      <canvas-text v-for="(text, i) in texts" :key="i" :index="i" :text="text"></canvas-text>
-    </div>
-  </div>
+  <md-layout md-gutter="" md-align="center">
+    <md-layout v-for="(text, i) in texts" md-flex="20" :key="i" md-row>
+      <canvas-text :index="i" :text="text"></canvas-text>
+    </md-layout>
+  </md-layout>
 </div>
 </template>
 
@@ -32,12 +34,24 @@ export default {
     return {
       stage: void 0,
       image: void 0,
+      scaleRate: 1,
       texts: []
     }
   },
   methods: {
+    scale(v) {
+      if (Number(v) <= 0)
+        return
+      const image = this.stage.get('Image')[0]
+      image.scaleX(v)
+      image.scaleY(v)
+      this.stage.width(image.width() * v)
+      this.stage.height(image.height() * v)
+      this.stage.draw()
+    },
     changeText(action, i, v) {
       const text = this.texts[i]
+      console.log(text)
       text[action](v)
       text.getLayer().draw()
     },
@@ -46,9 +60,9 @@ export default {
       const text = new Konva.Text({
         x: 0,
         y: 0,
-        text: '測試文字1\n測試文字2\n測試文字3',
+        text: '在非洲\n每六十秒\n就有一分鐘過去',
         fontSize: 30,
-        fontFamily: 'Calibri',
+        fontFamily: 'cwTeXHei',
         fill: 'black',
         shadowColor: 'black',
         shadowBlur: 30,
@@ -65,8 +79,16 @@ export default {
       textLayer.draw()
     },
     createGenerator(e) {
+      const image = this.stage.get('Image')[0]
+      image.width(image.width() * image.scaleX())
+      image.height(image.height() * image.scaleY())
+      image.scale({
+        x: 1,
+        y: 1
+      })
+
       this.$router.generator = {}
-      this.$router.generator.imageUrl = this.stage.get('Image')[0].toDataURL()
+      this.$router.generator.imageUrl = image.toDataURL()
 
       this.$router.generator.textsJSON = this.texts.map((text) => text.toJSON())
 
@@ -78,7 +100,9 @@ export default {
     if (!imageObj) {
       location.href = '#/'
     }
-    const texts = this.texts
+    const
+      texts = this.texts,
+      maxWidth = 960
 
     const
       image = new Konva.Image({
@@ -89,8 +113,13 @@ export default {
       stage = this.stage = new Konva.Stage({
         container: 'container'
       })
-    console.log(image.size())
-    stage.size(image.size())
+    if (image.width() > maxWidth)
+      image.scale({
+        x: maxWidth / image.width(),
+        y: maxWidth / image.width()
+      })
+    this.scaleRate = image.scale().x
+    stage.size(image.getClientRect())
     imageLayer.add(image)
     stage.add(imageLayer)
     imageLayer.draw()

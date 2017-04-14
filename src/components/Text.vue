@@ -1,62 +1,114 @@
-changeText<template>
-<div>
-  <div class="col-sm-6 col-md-4">
+<template>
+<md-card>
+  <md-card-media>
+    <md-ink-ripple />
     <img :src="src" alt="">
-    <div class="caption">
-      <h3>文字 {{index + 1}}</h3>
-      <p>
-        <label for="x">測試文字</label>
-        <textarea id="x" class="form-control" type="text" :value="text.text()" @input="change('text', $event.target.value)"></textarea>
+  </md-card-media>
 
-        <label for="x">文字大小</label>
-        <input id="x" class="form-control" type="text" :value="text.fontSize()" @input="change('fontSize', $event.target.value)">
+  <md-card-header>
+    <div class="md-title">文字方塊 {{index + 1}}</div>
+  </md-card-header>
 
-        <label for="text-color">文字顏色</label>
-        <div id="text-color" class="inl-bl"></div>
+  <md-card-content>
+    <md-input-container>
+      <label>預設文字</label>
+      <md-textarea :value="text.text()" @input="change('text', $event)"></md-textarea>
+    </md-input-container>
 
-        <label for="x">X 座標</label>
-        <input id="x" class="form-control" type="text" :value="text.x()" @input="change('x', $event.target.value)">
+    <md-input-container>
+      <label>文字大小</label>
+      <md-input type="number" :value="text.fontSize()" @input="change('fontSize', Number($event))"></md-input>
+    </md-input-container>
 
-        <label for="y">Y 座標</label>
-        <input id="y" class="form-control" type="text" :value="text.y()" @input="change('y', $event.target.value)">
+    <label>文字顏色</label>fontFamily
+    <chrome-picker style="display: inline;" v-model="colors" @change-color="change('fill', $event.hex)"></chrome-picker>
 
-        <label for=" width ">寬度</label>
-        <input id="width " class="form-control " type="text " :value="text.width()" @input="change( 'width', $event.target.value) ">
+    <md-input-container>
+      <label for="fontFamily">字型</label>
+      <md-select name="movie" id="fontFamily" :select="text.fontFamily()" @change="change('fontFamily', $event)">
+        <md-option value="cwTeXFangSong">仿宋體</md-option>
+        <md-option value="cwTeXHei">黑體</md-option>
+        <md-option value="cwTeXKai">楷體</md-option>
+        <md-option value="cwTeXMing">明體</md-option>
+        <md-option value="cwTeXYen">圓體</md-option>
+        <md-option value="Noto Sans TC">Noto Sans TC</md-option>
+      </md-select>
+    </md-input-container>
 
-        <label for="height">長度</label>
-        <input id="height" class="form-control" type="text" :value="text.height()" @input="change('height', $event.target.value)">
-      </p>
-    </div>
-  </div>
-</div>
+    <md-input-container>
+      <label>X 座標</label>
+      <md-input type="number" :value="text.x()" @input="change('x', Number($event))"></md-input>
+    </md-input-container>
+
+    <md-input-container>
+      <label>Y 座標</label>
+      <md-input type="number" :value="text.y()" @input="change('y', Number($event))"></md-input>
+    </md-input-container>
+
+    <md-input-container>
+      <label>寬度</label>
+      <md-input type="number" :value="text.width()" @input="change('width', Number($event))"></md-input>
+    </md-input-container>
+
+    <md-input-container>
+      <label>長度</label>
+      <md-input type="number" :value="text.height()" @input="change('height', Number($event))"></md-input>
+    </md-input-container>
+  </md-card-content>
+
+  <md-card-actions>
+    <md-button class="md-icon-button">
+      <md-icon>delete_forever</md-icon>
+    </md-button>
+  </md-card-actions>
+</md-card>
 </template>
 
 <script>
+import {
+  Chrome
+} from 'vue-color'
 export default {
   name: 'canvas-text',
+  components: {
+    'chrome-picker': Chrome
+  },
   props: ['index', 'text'],
   data() {
     return {
+      colors: {
+        hex: '#000000',
+        a: 1,
+        hsl: {
+          h: 0,
+          s: 0,
+          l: 0,
+          a: 1
+        },
+        hsv: {
+          h: 0,
+          s: 0,
+          v: 0,
+          a: 1
+        },
+        rgba: {
+          r: 0,
+          g: 0,
+          b: 0,
+          a: 1
+        }
+      },
       src: this.text.toDataURL(),
     }
   },
   methods: {
     change(type, v) {
+      console.log(type, v, typeof v)
       this.text[type](v)
       this.text.getStage().draw()
     }
   },
-  mounted() {
-    $('#text-color')
-      .colorpicker({
-        color: '#eeeeee',
-        container: true,
-        inline: true
-      })
-      .on('changeColor', (e) => {
-        this.change('fill', e.color.toHex())
-      })
-  }
+  mounted() {}
 }
 </script>
 

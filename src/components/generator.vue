@@ -1,10 +1,13 @@
 <template>
 <div class="generator">
   <div id="container"></div>
-  <div id="setting-list">
-    <div class="row">
-      <generator-text v-for="(text, i) in texts" :key="i" :index="i" :text="text"></generator-text>
-    </div>
+
+  <md-button class="md-raised md-primary" @click.native="generate">
+    <md-icon>create</md-icon>產生圖文
+  </md-button>
+
+  <div class="row">
+    <generator-text v-for="(text, i) in texts" :key="i" :index="i" :text="text"></generator-text>
   </div>
 </div>
 </template>
@@ -20,6 +23,13 @@ export default {
     return {
       stage: void 0,
       texts: []
+    }
+  },
+  methods: {
+    generate(e) {
+      this.$router.product = {}
+      this.$router.product.imageUrl = this.stage.toDataURL()
+      location.href = '#/product'
     }
   },
   mounted() {
