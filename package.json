@@ -14,6 +14,7 @@
     "konva": "^1.5.0",
     "vue": "^2.2.2",
     "vue-color": "^2.0.7",
+    "vue-material": "^0.7.1",
     "vue-router": "^2.3.0"
   },
   "devDependencies": {

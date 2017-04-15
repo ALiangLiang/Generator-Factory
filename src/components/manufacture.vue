@@ -1,5 +1,9 @@
 <template>
 <div class="manufacture">
+  <div class="on-top" :style="(progress === 0)?'display:none;':''">
+    <md-progress class="md-accent" :md-progress="progress"></md-progress>
+  </div>
+
   <div id="container"></div>
 
   <md-button class="md-raised md-primary" @click.native="createTextbox">
@@ -25,6 +29,8 @@
 
 <script>
 import canvasText from './Text.vue'
+import futch from './Futch.js'
+import dataURItoBlob from './dataURItoBlob.js'
 export default {
   name: 'manufacture',
   components: {
@@ -35,7 +41,8 @@ export default {
       stage: void 0,
       image: void 0,
       scaleRate: 1,
-      texts: []
+      texts: [],
+      progress: 0
     }
   },
   methods: {
@@ -87,12 +94,26 @@ export default {
         y: 1
       })
 
-      this.$router.generator = {}
-      this.$router.generator.imageUrl = image.toDataURL()
-
-      this.$router.generator.textsJSON = this.texts.map((text) => text.toJSON())
-
-      location.href = '#/generator'
+      const
+        DOMAIN = 'http://aliangliang.com.tw:8787/',
+        form = new FormData()
+      form.append('image', dataURItoBlob(image.toDataURL()))
+      form.append('texts', JSON.stringify(this.texts.map((text) => text.toJSON())))
+      this.progress = 0.000001
+      futch(DOMAIN + 'manufacture', {
+          method: 'POST',
+          mode: 'cors',
+          body: form
+        }, (e) => {
+          this.progress = e.loaded / e.total * 100
+        })
+        .then((text) => JSON.parse(text))
+        .then((data) => {
+          location.href = '#/generator/' + data.id
+        })
+        .catch(function(error) {
+          console.log('Request failed', error);
+        });
     }
   },
   mounted() {
@@ -132,5 +153,12 @@ export default {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.on-top {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
 }
 </style>

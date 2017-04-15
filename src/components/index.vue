@@ -1,7 +1,9 @@
 <template>
 <div class="hello">
   <h1>{{ msg }}</h1>
-  <input type="file" class="dropify" data-height="300" @change="loadFile" />
+  <md-whiteframe md-elevation="2">
+    <input type="file" class="dropify" data-height="300" @change="loadFile" />
+  </md-whiteframe>
 </div>
 </template>
 

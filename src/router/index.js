@@ -11,27 +11,27 @@ Vue.use(VueMaterial)
 
 export default new Router({
   routes: [{
-    path: '/',
-    name: 'index',
-    component: index
-  },
-  {
-    path: '/manufacture',
-    name: 'Manufacture',
-    component: Manufacture,
-    data: {
-      image: void 0
+      path: '/',
+      name: 'index',
+      component: index
+    },
+    {
+      path: '/manufacture',
+      name: 'Manufacture',
+      component: Manufacture,
+      data: {
+        image: void 0
+      }
+    },
+    {
+      path: '/generator/:id',
+      name: 'Generator',
+      component: Generator
+    },
+    {
+      path: '/product/:id',
+      name: 'Product',
+      component: Product
     }
-  },
-  {
-    path: '/generator',
-    name: 'Generator',
-    component: Generator
-  },
-  {
-    path: '/product',
-    name: 'Product',
-    component: Product
-  }
   ]
 })
