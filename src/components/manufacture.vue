@@ -95,7 +95,7 @@ export default {
       })
 
       const
-        DOMAIN = 'http://aliangliang.com.tw:8787/',
+        DOMAIN = 'https://aliangliang.com.tw:8787/',
         form = new FormData()
       form.append('image', dataURItoBlob(image.toDataURL()))
       form.append('texts', JSON.stringify(this.texts.map((text) => text.toJSON())))

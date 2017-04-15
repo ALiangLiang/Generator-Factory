@@ -16,13 +16,13 @@ export default {
     if (!this.$route.params.id)
       location.href = '#/'
 
-    fetch('http://aliangliang.com.tw:8787/product/' + this.$route.params.id, {
+    fetch('https://aliangliang.com.tw:8787/product/' + this.$route.params.id, {
         method: 'get',
         mode: 'cors',
       })
       .then((res) => res.json())
       .then((data) => {
-        this.src = 'http://aliangliang.com.tw:8787/' + data.image
+        this.src = 'https://aliangliang.com.tw:8787/' + data.image
       })
   }
 }

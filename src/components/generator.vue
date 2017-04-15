@@ -35,7 +35,7 @@ export default {
   methods: {
     generate(e) {
       const
-        DOMAIN = 'http://aliangliang.com.tw:8787/',
+        DOMAIN = 'https://aliangliang.com.tw:8787/',
         form = new FormData()
       form.append('image', dataURItoBlob(this.stage.toDataURL()))
       this.progress = 0.000001
@@ -60,7 +60,7 @@ export default {
     if (!this.$route.params.id)
       location.href = '#/'
 
-    fetch('http://aliangliang.com.tw:8787/generator/' + this.$route.params.id, {
+    fetch('https://aliangliang.com.tw:8787/generator/' + this.$route.params.id, {
         method: 'get',
         mode: 'cors',
       })
@@ -68,7 +68,7 @@ export default {
       .then((data) => {
         console.log(data)
         const
-          imageUrl = 'http://aliangliang.com.tw:8787/' + data.image,
+          imageUrl = 'https://aliangliang.com.tw:8787/' + data.image,
           textsJSON = data.texts
 
         const imageObj = new Image()
