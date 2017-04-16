@@ -19,9 +19,9 @@
     <md-icon>file_upload</md-icon>上傳imgur
   </md-button> -->
 
-  <!-- <md-button class="md-raised md-primary" @click.native="shareWithFB">
+  <md-button class="md-raised md-primary" target="_blank" :href="'https://www.facebook.com/share.php?u=' + url">
     <md-icon>share</md-icon>分享至臉書
-  </md-button> -->
+  </md-button>
 
   <md-snackbar md-position="bottom center" ref="snackbar" md-duration="4000">
     <span>成功複製網址</span>
