@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import Konva from 'Konva'
 import canvasText from './Text.vue'
 import futch from './Futch.js'
 import dataURItoBlob from './dataURItoBlob.js'
@@ -98,15 +99,14 @@ export default {
         DOMAIN = 'https://aliangliang.com.tw:8787/',
         form = new FormData()
       form.append('image', dataURItoBlob(image.toDataURL()))
+      form.append('preview', dataURItoBlob(this.stage.toDataURL()))
       form.append('texts', JSON.stringify(this.texts.map((text) => text.toJSON())))
       this.progress = 0.000001
       futch(DOMAIN + 'manufacture', {
           method: 'POST',
           mode: 'cors',
           body: form
-        }, (e) => {
-          this.progress = e.loaded / e.total * 100
-        })
+        }, (e) => this.progress = e.loaded / e.total * 100)
         .then((text) => JSON.parse(text))
         .then((data) => {
           location.href = '#/generator/' + data.id

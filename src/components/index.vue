@@ -2,7 +2,7 @@
 <div class="hello">
   <h1>{{ msg }}</h1>
   <md-whiteframe md-elevation="2">
-    <input type="file" class="dropify" data-height="300" @change="loadFile" />
+    <input type="file" class="dropify" accept="image/*" data-height="300" @change="loadFile" />
   </md-whiteframe>
 </div>
 </template>
@@ -22,7 +22,7 @@ export default {
         return
       const file = files[0]
       if (file.type.match(/image.*/)) {
-        var reader = new FileReader();
+        const reader = new FileReader();
 
         reader.onload = (e2) => {
           const img = document.createElement('img')

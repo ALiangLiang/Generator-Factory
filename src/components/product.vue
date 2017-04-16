@@ -24,7 +24,7 @@
   </md-button>
 
   <md-snackbar md-position="bottom center" ref="snackbar" md-duration="4000">
-    <span>成功複製網址</span>
+    <span>{{snackbarText}}</span>
     <md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()">Close</md-button>
   </md-snackbar>
 </div>
@@ -32,17 +32,20 @@
 
 <script>
 import Clipboard from 'clipboard'
+import download from 'downloadjs'
 export default {
   name: 'product',
   data: function() {
     return {
       src: '',
-      url: document.location.href
+      url: document.location.href,
+      snackbarText: ''
     }
   },
   methods: {
     selectAll(e) {
-      this.$refs.snackbar.open();
+      this.snackbarText = '成功複製網址'
+      this.$refs.snackbar.open()
       document.getElementById('copy-url').click()
       document.getElementById('url-input').select()
     },

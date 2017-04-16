@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import Konva from 'Konva'
 import Clipboard from 'clipboard'
 import GeneratorText from './Generator_Text.vue'
 import futch from './Futch.js'
