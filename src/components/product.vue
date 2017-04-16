@@ -23,6 +23,8 @@
     <md-icon>share</md-icon>分享至臉書
   </md-button>
 
+  <vue-disqus shortname="generator-factory" :identifier="$route.path" :url="url"></vue-disqus>
+
   <md-snackbar md-position="bottom center" ref="snackbar" md-duration="4000">
     <span>{{snackbarText}}</span>
     <md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()">Close</md-button>
@@ -33,8 +35,12 @@
 <script>
 import Clipboard from 'clipboard'
 import download from 'downloadjs'
+import VueDisqus from 'vue-disqus/VueDisqus.vue'
 export default {
   name: 'product',
+  components: {
+    VueDisqus
+  },
   data: function() {
     return {
       src: '',

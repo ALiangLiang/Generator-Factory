@@ -4,15 +4,22 @@
   <md-whiteframe md-elevation="2">
     <input type="file" class="dropify" accept="image/*" data-height="300" @change="loadFile" />
   </md-whiteframe>
+
+  <vue-disqus shortname="generator-factory" :identifier="$route.path" :url="url"></vue-disqus>
 </div>
 </template>
 
 <script>
+import VueDisqus from 'vue-disqus/VueDisqus.vue'
 export default {
-  name: 'hello',
+  name: 'index',
+  components: {
+    VueDisqus
+  },
   data() {
     return {
-      msg: '歡迎使用 圖文產生器工廠'
+      msg: '歡迎使用 圖文產生器工廠',
+      url: document.location.href
     }
   },
   methods: {

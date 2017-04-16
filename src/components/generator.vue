@@ -31,6 +31,8 @@
     <generator-text v-for="(text, i) in texts" :key="i" :index="i" :text="text"></generator-text>
   </div>
 
+  <vue-disqus shortname="generator-factory" :identifier="$route.path" :url="url"></vue-disqus>
+
   <md-snackbar md-position="bottom center" ref="snackbar" md-duration="4000">
     <span>成功複製網址</span>
     <md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()">Close</md-button>
@@ -41,13 +43,15 @@
 <script>
 import Konva from 'Konva'
 import Clipboard from 'clipboard'
+import VueDisqus from 'vue-disqus/VueDisqus.vue'
 import GeneratorText from './Generator_Text.vue'
 import futch from './Futch.js'
 import dataURItoBlob from './dataURItoBlob.js'
 export default {
   name: 'generator',
   components: {
-    GeneratorText
+    GeneratorText,
+    VueDisqus
   },
   data() {
     return {
