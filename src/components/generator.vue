@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import Konva from 'Konva'
+import Konva from 'konva'
 import Clipboard from 'clipboard'
 import VueDisqus from 'vue-disqus/VueDisqus.vue'
 import GeneratorText from './Generator_Text.vue'

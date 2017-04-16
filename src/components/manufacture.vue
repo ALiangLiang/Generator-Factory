@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import Konva from 'Konva'
+import Konva from 'konva'
 import canvasText from './Text.vue'
 import futch from './Futch.js'
 import dataURItoBlob from './dataURItoBlob.js'
