@@ -7,6 +7,8 @@
   <span class="md-display-3">{{name}}</span>
   <br>
   <span class="md-subheading">{{description}}</span>
+  <br>
+  <md-checkbox v-model="isPrivate" :disabled="alwaysPrivate">不公開圖文 (只有擁有連結的人可以看得到)</md-checkbox>
 
   <div id="container"></div>
 
@@ -57,8 +59,11 @@ export default {
     return {
       stage: void 0,
       texts: [],
+      manufactorId: void 0,
       name: '　',
       description: '　',
+      isPrivate: false,
+      alwaysPrivate: false,
       progress: 0,
       url: document.location.href
     }
@@ -76,7 +81,9 @@ export default {
       const
         DOMAIN = 'https://aliangliang.com.tw:8787/',
         form = new FormData()
+      form.append('manufactorId', this.manufactorId)
       form.append('image', dataURItoBlob(this.stage.toDataURL()))
+      form.append('isPrivate', this.isPrivate)
       this.progress = 0.000001
       futch(DOMAIN + 'generate', {
           method: 'POST',
@@ -86,9 +93,7 @@ export default {
           this.progress = e.loaded / e.total * 100
         })
         .then((text) => JSON.parse(text))
-        .then((data) => {
-          location.href = '#/product/' + data.id
-        })
+        .then((data) => location.href = '#/product/' + data.id)
         .catch(function(error) {
           console.log('Request failed', error);
         });
@@ -110,8 +115,10 @@ export default {
           imageUrl = 'https://aliangliang.com.tw:8787/' + data.image,
           textsJSON = data.texts
 
+        this.manufactorId = this.$route.params.id
         this.name = data.name
         this.description = data.description
+        this.isPrivate = this.alwaysPrivate = data.isPrivate
 
         const imageObj = new Image()
         imageObj.crossOrigin = 'Anonymous'

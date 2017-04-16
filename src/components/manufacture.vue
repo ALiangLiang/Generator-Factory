@@ -14,6 +14,8 @@
     <md-textarea v-model="description"></md-textarea>
   </md-input-container>
 
+  <md-checkbox v-model="isPrivate">不公開產生器 (只有擁有連結的人可以使用)</md-checkbox>
+
   <div id="container"></div>
 
   <md-button class="md-raised md-primary" @click.native="createTextbox">
@@ -54,6 +56,7 @@ export default {
       image: void 0,
       name: '',
       description: '',
+      isPrivate: false,
       scaleRate: 1,
       texts: [],
       progress: 0
@@ -90,9 +93,6 @@ export default {
         shadowOpacity: 0.5,
         draggable: true
       })
-      text.on('dragmove', function() {
-
-      })
       textLayer.add(text)
       this.stage.add(textLayer)
       this.texts.push(text)
@@ -115,6 +115,7 @@ export default {
         form = new FormData()
       form.append('name', this.name)
       form.append('description', this.description)
+      form.append('isPrivate', this.isPrivate)
       form.append('image', dataURItoBlob(image.toDataURL()))
       form.append('preview', dataURItoBlob(this.stage.toDataURL()))
       form.append('texts', JSON.stringify(this.texts.map((text) => text.toJSON())))
