@@ -42,6 +42,7 @@ import Konva from 'konva'
 import canvasText from './Text.vue'
 import futch from './Futch.js'
 import dataURItoBlob from './dataURItoBlob.js'
+import uselessMottos from './UselessMottos.js'
 export default {
   name: 'manufacture',
   components: {
@@ -79,7 +80,7 @@ export default {
       const text = new Konva.Text({
         x: 0,
         y: 0,
-        text: '在非洲\n每六十秒\n就有一分鐘過去',
+        text: uselessMottos(),
         fontSize: 30,
         fontFamily: 'cwTeXHei',
         fill: 'black',
