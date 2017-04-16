@@ -4,6 +4,16 @@
     <md-progress class="md-accent" :md-progress="progress"></md-progress>
   </div>
 
+  <md-input-container :class="(name === '')?'md-input-invalid':''">
+    <label>產生器名稱</label>
+    <md-input type="text" v-model="name" required></md-input>
+  </md-input-container>
+
+  <md-input-container>
+    <label>簡介</label>
+    <md-textarea v-model="description"></md-textarea>
+  </md-input-container>
+
   <div id="container"></div>
 
   <md-button class="md-raised md-primary" @click.native="createTextbox">
@@ -41,6 +51,8 @@ export default {
     return {
       stage: void 0,
       image: void 0,
+      name: '',
+      description: '',
       scaleRate: 1,
       texts: [],
       progress: 0
@@ -59,7 +71,6 @@ export default {
     },
     changeText(action, i, v) {
       const text = this.texts[i]
-      console.log(text)
       text[action](v)
       text.getLayer().draw()
     },
@@ -87,6 +98,9 @@ export default {
       textLayer.draw()
     },
     createGenerator(e) {
+      if (this.name === '')
+        return
+
       const image = this.stage.get('Image')[0]
       image.width(image.width() * image.scaleX())
       image.height(image.height() * image.scaleY())
@@ -98,6 +112,8 @@ export default {
       const
         DOMAIN = 'https://aliangliang.com.tw:8787/',
         form = new FormData()
+      form.append('name', this.name)
+      form.append('description', this.description)
       form.append('image', dataURItoBlob(image.toDataURL()))
       form.append('preview', dataURItoBlob(this.stage.toDataURL()))
       form.append('texts', JSON.stringify(this.texts.map((text) => text.toJSON())))
