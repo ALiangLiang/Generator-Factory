@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import 'material-design-icons/iconfont/material-icons.css'
 export default {
   name: 'app',
   data: function() {
@@ -54,7 +55,7 @@ export default {
 </script>
 
 <style>
-/*@import "material-design-icons";*/
+/*@import "material-design-icons/iconfont/material-icons.css";*/
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
