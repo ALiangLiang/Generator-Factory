@@ -174,9 +174,10 @@ export default {
 }
 
 .on-top {
-  position: absolute;
+  position: fixed;
   top: 0px;
   left: 0px;
   width: 100%;
+  z-index: 99999;
 }
 </style>

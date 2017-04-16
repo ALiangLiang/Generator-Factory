@@ -55,8 +55,6 @@ export default {
 </script>
 
 <style>
-/*@import "material-design-icons/iconfont/material-icons.css";*/
-
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -64,5 +62,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   padding: 16px;
+}
+
+.md-sidenav-content {
+  top: 0px;
+  position: fixed !important;
 }
 </style>

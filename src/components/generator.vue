@@ -173,10 +173,11 @@ adow: rgba(0, 0, 0, 0.0745098) 0px 10px 20px;
 }
 
 .on-top {
-  position: absolute;
+  position: fixed;
   top: 0px;
   left: 0px;
   width: 100%;
+  z-index: 99999;
 }
 </style>
 yle>
