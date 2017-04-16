@@ -4,7 +4,7 @@
 
   <md-input-container>
     <label>複製連結</label>
-    <md-input id="url-input" v-model="url" @click.native="selectAll"></md-input>
+    <md-input id="url-input" :value="url" @click.native="selectAll" @input.native="fixedText"></md-input>
     <md-button id="copy-url" class="md-icon-button" :data-clipboard-text="url" @click.native="selectAll">
       <md-icon>content_copy</md-icon>
       <md-tooltip md-direction="bottom">複製</md-tooltip>
@@ -45,6 +45,9 @@ export default {
       this.$refs.snackbar.open();
       document.getElementById('copy-url').click()
       document.getElementById('url-input').select()
+    },
+    fixedText(e) {
+      e.target.value = this.url
     },
     download() {
       const img = document.querySelector('img')

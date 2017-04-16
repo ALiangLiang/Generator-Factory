@@ -8,14 +8,14 @@
 
   <md-input-container>
     <label>複製連結</label>
-    <md-input id="url-input" v-model="url" @click.native="selectAll"></md-input>
+    <md-input id="url-input" :value="url" @click.native="selectAll" @input.native="fixedText"></md-input>
     <md-button id="copy-url" class="md-icon-button" :data-clipboard-text="url" @click.native="selectAll">
       <md-icon>content_copy</md-icon>
       <md-tooltip md-direction="bottom">複製</md-tooltip>
     </md-button>
   </md-input-container>
 
-  <md-button class="md-raised md-primary" @click.native="shareWithFB">
+  <md-button class="md-raised md-primary" target="_blank" :href="'https://www.facebook.com/share.php?u=' + url">
     <md-icon>share</md-icon>分享至臉書
   </md-button>
 
@@ -58,8 +58,8 @@ export default {
       document.getElementById('copy-url').click()
       document.getElementById('url-input').select()
     },
-    shareWithFB() {
-
+    fixedText(e) {
+      e.target.value = this.url
     },
     generate(e) {
       const
@@ -160,3 +160,4 @@ adow: rgba(0, 0, 0, 0.0745098) 0px 10px 20px;
   width: 100%;
 }
 </style>
+yle>
