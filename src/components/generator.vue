@@ -6,6 +6,19 @@
 
   <div id="container"></div>
 
+  <md-input-container>
+    <label>複製連結</label>
+    <md-input id="url-input" v-model="url" @click.native="selectAll"></md-input>
+    <md-button id="copy-url" class="md-icon-button" :data-clipboard-text="url" @click.native="selectAll">
+      <md-icon>content_copy</md-icon>
+      <md-tooltip md-direction="bottom">複製</md-tooltip>
+    </md-button>
+  </md-input-container>
+
+  <md-button class="md-raised md-primary" @click.native="shareWithFB">
+    <md-icon>share</md-icon>分享至臉書
+  </md-button>
+
   <md-button class="md-raised md-primary" @click.native="generate">
     <md-icon>create</md-icon>產生圖文
   </md-button>
@@ -13,10 +26,16 @@
   <div class="row">
     <generator-text v-for="(text, i) in texts" :key="i" :index="i" :text="text"></generator-text>
   </div>
+
+  <md-snackbar md-position="bottom center" ref="snackbar" md-duration="4000">
+    <span>成功複製網址</span>
+    <md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()">Close</md-button>
+  </md-snackbar>
 </div>
 </template>
 
 <script>
+import Clipboard from 'clipboard'
 import GeneratorText from './Generator_Text.vue'
 import futch from './Futch.js'
 import dataURItoBlob from './dataURItoBlob.js'
@@ -29,10 +48,19 @@ export default {
     return {
       stage: void 0,
       texts: [],
-      progress: 0
+      progress: 0,
+      url: document.location.href
     }
   },
   methods: {
+    selectAll(e) {
+      this.$refs.snackbar.open();
+      document.getElementById('copy-url').click()
+      document.getElementById('url-input').select()
+    },
+    shareWithFB() {
+
+    },
     generate(e) {
       const
         DOMAIN = 'https://aliangliang.com.tw:8787/',
@@ -56,9 +84,10 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route)
     if (!this.$route.params.id)
       location.href = '#/'
+
+    new Clipboard('#copy-url')
 
     fetch('https://aliangliang.com.tw:8787/generator/' + this.$route.params.id, {
         method: 'get',
@@ -110,6 +139,17 @@ export default {
 <style>
 .thumbnail.active {
   box-shadow: rgba(0, 0, 0, 0.0745098) 0px 10px 20px;
+  background-color: #eeeeee;
+}
+
+.on-top {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+}
+</style>
+adow: rgba(0, 0, 0, 0.0745098) 0px 10px 20px;
   background-color: #eeeeee;
 }
 

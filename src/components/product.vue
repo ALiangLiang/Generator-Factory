@@ -2,29 +2,50 @@
 <div class="product">
   <md-image crossOrigin="anonymous" :md-src="src"></md-image>
 
+  <md-input-container>
+    <label>複製連結</label>
+    <md-input id="url-input" v-model="url" @click.native="selectAll"></md-input>
+    <md-button id="copy-url" class="md-icon-button" :data-clipboard-text="url" @click.native="selectAll">
+      <md-icon>content_copy</md-icon>
+      <md-tooltip md-direction="bottom">複製</md-tooltip>
+    </md-button>
+  </md-input-container>
+
   <md-button class="md-raised md-primary" @click.native="download">
-    <md-icon>create</md-icon>下載
+    <md-icon>file_download</md-icon>下載
   </md-button>
 
-  <md-button class="md-raised md-primary" @click.native="uploadToImgur">
-    <md-icon>create</md-icon>上傳imgur
-  </md-button>
+  <!-- <md-button class="md-raised md-primary" @click.native="uploadToImgur">
+    <md-icon>file_upload</md-icon>上傳imgur
+  </md-button> -->
 
-  <md-button class="md-raised md-primary" @click.native="shareWithFB">
-    <md-icon>create</md-icon>分享至臉書
-  </md-button>
+  <!-- <md-button class="md-raised md-primary" @click.native="shareWithFB">
+    <md-icon>share</md-icon>分享至臉書
+  </md-button> -->
+
+  <md-snackbar md-position="bottom center" ref="snackbar" md-duration="4000">
+    <span>成功複製網址</span>
+    <md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()">Close</md-button>
+  </md-snackbar>
 </div>
 </template>
 
 <script>
+import Clipboard from 'clipboard'
 export default {
   name: 'product',
   data: function() {
     return {
-      src: ''
+      src: '',
+      url: document.location.href
     }
   },
   methods: {
+    selectAll(e) {
+      this.$refs.snackbar.open();
+      document.getElementById('copy-url').click()
+      document.getElementById('url-input').select()
+    },
     download() {
       const img = document.querySelector('img')
       img.setAttribute('crossOrigin', 'anonymous');
@@ -48,6 +69,8 @@ export default {
   mounted() {
     if (!this.$route.params.id)
       location.href = '#/'
+
+    new Clipboard('#copy-url')
 
     fetch('https://aliangliang.com.tw:8787/product/' + this.$route.params.id, {
         method: 'get',

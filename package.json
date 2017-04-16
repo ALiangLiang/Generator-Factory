@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.6",
+    "clipboard": "^1.6.1",
     "konva": "^1.5.0",
     "vue": "^2.2.2",
     "vue-color": "^2.0.7",
