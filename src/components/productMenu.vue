@@ -3,7 +3,7 @@
   <md-layout v-for="product in products" :key="product.id" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="33">
     <md-card>
       <md-card-media>
-        <md-image :md-src="'https://aliangliang.com.tw:8787/' + product.image"></md-image>
+        <image-loader :src="'https://aliangliang.com.tw:8787/' + product.image"></image-loader>
         <md-ink-ripple></md-ink-ripple>
       </md-card-media>
 
@@ -16,8 +16,12 @@
 </template>
 
 <script>
+import ImageLoader from './ImageLoader.vue'
 export default {
   name: 'ProductMenu',
+  components: {
+    ImageLoader
+  },
   data: function() {
     return {
       products: []

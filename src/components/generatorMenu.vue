@@ -9,7 +9,7 @@
         </md-card-header>
 
         <md-card-media>
-          <md-image :md-src="'https://aliangliang.com.tw:8787/' + generator.preview"></md-image>
+          <image-loader :src="'https://aliangliang.com.tw:8787/' + generator.preview"></image-loader>
           <md-ink-ripple></md-ink-ripple>
         </md-card-media>
 
@@ -26,8 +26,12 @@
 </template>
 
 <script>
+import ImageLoader from './ImageLoader.vue'
 export default {
   name: 'generatorMenu',
+  components: {
+    ImageLoader
+  },
   data: function() {
     return {
       generators: []

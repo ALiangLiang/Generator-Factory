@@ -1,6 +1,6 @@
 <template>
 <div class="product">
-  <md-image crossOrigin="anonymous" :md-src="src"></md-image>
+  <image-loader :src="src" crossOrigin="anonymous" @load="isDlBtnDisabled = false"></image-loader>
 
   <md-input-container>
     <label>複製連結</label>
@@ -11,7 +11,7 @@
     </md-button>
   </md-input-container>
 
-  <md-button class="md-raised md-primary" @click.native="download">
+  <md-button class="md-raised md-primary" :disabled="isDlBtnDisabled" @click.native="download">
     <md-icon>file_download</md-icon>下載
   </md-button>
 
@@ -36,16 +36,19 @@
 import Clipboard from 'clipboard'
 import download from 'downloadjs'
 import VueDisqus from 'vue-disqus/VueDisqus.vue'
+import ImageLoader from './ImageLoader.vue'
 export default {
   name: 'product',
   components: {
-    VueDisqus
+    VueDisqus,
+    ImageLoader
   },
   data: function() {
     return {
       src: '',
       url: document.location.href,
-      snackbarText: ''
+      snackbarText: '',
+      isDlBtnDisabled: true
     }
   },
   methods: {
