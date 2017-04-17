@@ -93,7 +93,7 @@ export default {
       })
       .then((res) => res.json())
       .then((data) => {
-        this.src = DOMAIN + '/api/' + data.image
+        this.src = DOMAIN + data.image
       })
   }
 }

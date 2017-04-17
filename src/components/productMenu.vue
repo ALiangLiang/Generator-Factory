@@ -32,7 +32,7 @@ export default {
       .then((res) => res.json())
       .then((json) => this.products = json
         .map((product) => {
-          product.imageSrc = DOMAIN + '/api/' + product.image
+          product.imageSrc = DOMAIN + product.image
           return product
         }))
   }

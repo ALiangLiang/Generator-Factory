@@ -110,7 +110,7 @@ export default {
       .then((res) => res.json())
       .then((data) => {
         const
-          imageUrl = DOMAIN + '/api/' + data.image,
+          imageUrl = DOMAIN + data.image,
           textsJSON = data.texts
 
         this.manufactorId = this.$route.params.id

@@ -42,7 +42,7 @@ export default {
       .then((res) => res.json())
       .then((json) => this.generators = json
         .map((generator) => {
-          generator.previerSrc = DOMAIN + '/api/' + generator.preview
+          generator.previerSrc = DOMAIN + generator.preview
           return generator
         }))
   }
