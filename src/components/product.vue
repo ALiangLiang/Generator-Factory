@@ -19,7 +19,7 @@
     <md-icon>file_upload</md-icon>上傳imgur
   </md-button> -->
 
-  <md-button class="md-raised md-primary" target="_blank" :href="'https://www.facebook.com/share.php?u=' + url">
+  <md-button class="md-raised md-primary" target="_blank" :href="'https://www.facebook.com/share.php?u=' + encodeURIComponent(url)">
     <md-icon>share</md-icon>分享至臉書
   </md-button>
 
