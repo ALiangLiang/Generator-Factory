@@ -4,38 +4,55 @@
     <md-progress class="md-accent" :md-progress="progress"></md-progress>
   </div>
 
-  <md-input-container :class="(name === '')?'md-input-invalid':''">
-    <label>產生器名稱</label>
-    <md-input type="text" v-model="name" required></md-input>
-  </md-input-container>
+  <md-layout md-gutter="16">
+    <md-layout md-align="center" md-flex-xsmall="100" md-flex-small="100" md-flex-medium="60" md-flex-large="70">
+      <div id="container"></div>
 
-  <md-input-container>
-    <label>簡介</label>
-    <md-textarea v-model="description"></md-textarea>
-  </md-input-container>
+      <md-input-container :class="(name === '')?'md-input-invalid':''">
+        <label>產生器名稱</label>
+        <md-input type="text" v-model="name" required></md-input>
+      </md-input-container>
 
-  <md-checkbox v-model="isPrivate">不公開產生器 (只有擁有連結的人可以使用)</md-checkbox>
+      <md-input-container>
+        <label>簡介</label>
+        <md-textarea v-model="description"></md-textarea>
+      </md-input-container>
 
-  <div id="container"></div>
+      <md-checkbox v-model="isPrivate">不公開產生器 (只有擁有連結的人可以使用)</md-checkbox>
 
-  <md-button class="md-raised md-primary" @click.native="createTextbox">
-    <md-icon @click="createTextbox">text_fields</md-icon>新增文字方塊
-  </md-button>
+      <md-input-container>
+        <label>縮放</label>
+        <md-input type="number" v-model="scaleRate" @input="scale"></md-input>
+      </md-input-container>
 
-  <md-button class="md-raised md-primary" @click.native="createGenerator">
-    <md-icon>build</md-icon>製造產生器
-  </md-button>
+      <md-button class="md-raised md-primary" @click.native="createGenerator">
+        <md-icon>build</md-icon>組裝產生器
+      </md-button>
+    </md-layout>
 
-  <md-input-container>
-    <label>縮放</label>
-    <md-input type="number" v-model="scaleRate" @input="scale"></md-input>
-  </md-input-container>
+    <md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="40" md-flex-large="30" md-column>
+      <md-card>
+        <md-layout md-gutter class="default-flex">
+          <md-button class="md-raised md-primary" @click.native="createTextbox">
+            <md-icon @click="createTextbox">text_fields</md-icon>新增文字方塊
+          </md-button>
+        </md-layout>
 
-  <md-layout md-gutter="" md-align="center">
-    <md-layout v-for="(text, i) in texts" md-flex="20" :key="i" md-row>
-      <canvas-text :index="i" :text="text"></canvas-text>
+        <md-layout md-gutter class="default-flex">
+          <md-tabs ref="textTabNavbar">
+            <md-tab v-for="(text, i) in texts" :key="i" :md-label="'文字 ' + (i + 1)">
+              <canvas-text :index="i" :text="text"></canvas-text>
+            </md-tab>
+          </md-tabs>
+        </md-layout>
+      </md-card>
     </md-layout>
   </md-layout>
+
+  <md-snackbar md-position="bottom center" ref="snackbar" md-duration="4000">
+    <span>{{snackbarText}}</span>
+    <md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()">Close</md-button>
+  </md-snackbar>
 </div>
 </template>
 
@@ -52,6 +69,7 @@ export default {
   },
   data: function() {
     return {
+      MAX_WIDTH_HEIGHT: 960,
       stage: void 0,
       image: void 0,
       name: '',
@@ -59,14 +77,27 @@ export default {
       isPrivate: false,
       scaleRate: 1,
       texts: [],
-      progress: 0
+      progress: 0,
+      snackbarText: ''
     }
   },
   methods: {
     scale(v) {
       if (Number(v) <= 0)
         return
+
       const image = this.stage.get('Image')[0]
+      if (image.width() * v > this.MAX_WIDTH_HEIGHT) {
+        v = this.MAX_WIDTH_HEIGHT / image.width()
+        this.snackbarText = `超過寬度上限(${this.MAX_WIDTH_HEIGHT}px)囉`
+        this.$refs.snackbar.open()
+      }
+      if (image.height() * v > this.MAX_WIDTH_HEIGHT) {
+        v = this.MAX_WIDTH_HEIGHT / image.height()
+        this.snackbarText = `超過高度上限(${this.MAX_WIDTH_HEIGHT}px)囉`
+        this.$refs.snackbar.open()
+      }
+      this.scaleRate = v
       image.scaleX(v)
       image.scaleY(v)
       this.stage.width(image.width() * v)
@@ -99,8 +130,11 @@ export default {
       textLayer.draw()
     },
     createGenerator(e) {
-      if (this.name === '')
+      if (this.name === '') {
+        this.snackbarText = '請先幫產生器取個名字吧'
+        this.$refs.snackbar.open()
         return
+      }
 
       const image = this.stage.get('Image')[0]
       image.width(image.width() * image.scaleX())
@@ -139,9 +173,7 @@ export default {
     if (!imageObj) {
       location.href = '#/'
     }
-    const
-      texts = this.texts,
-      maxWidth = 960
+    const texts = this.texts
 
     const
       image = new Konva.Image({
@@ -152,16 +184,30 @@ export default {
       stage = this.stage = new Konva.Stage({
         container: 'container'
       })
-    if (image.width() > maxWidth)
+    if (image.width() > this.MAX_WIDTH_HEIGHT)
       image.scale({
-        x: maxWidth / image.width(),
-        y: maxWidth / image.width()
+        x: this.MAX_WIDTH_HEIGHT / image.width(),
+        y: this.MAX_WIDTH_HEIGHT / image.width()
       })
     this.scaleRate = image.scale().x
     stage.size(image.getClientRect())
     imageLayer.add(image)
     stage.add(imageLayer)
     imageLayer.draw()
+
+    // When create a new textbox,  focus on the lastest tab.
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.addedNodes[0])
+          mutation.addedNodes[0].click()
+      })
+    })
+    observer.observe(this.$refs.textTabNavbar.$el.querySelector('nav'), {
+      attributes: true,
+      childList: true,
+      characterData: true
+    })
+
   }
 }
 </script>
@@ -179,5 +225,9 @@ export default {
   left: 0px;
   width: 100%;
   z-index: 99999;
+}
+
+.default-flex {
+  flex: initial;
 }
 </style>

@@ -15,52 +15,75 @@
       <md-textarea :value="text.text()" @input="change('text', $event)"></md-textarea>
     </md-input-container>
 
-    <md-input-container>
-      <label>文字大小</label>
-      <md-input type="number" :value="text.fontSize()" @input="change('fontSize', Number($event))"></md-input>
-    </md-input-container>
+    <md-button class="md-primary md-raised" id="colorPickerBtn" @click.native="$refs.colorDialog.open()">變更文字顏色</md-button>
 
-    <label>文字顏色</label>fontFamily
-    <chrome-picker style="display: inline;" v-model="colors" @change-color="change('fill', $event.hex)"></chrome-picker>
+    <md-layout md-gutter>
+      <md-layout md-gutter="20" :md-flex-xsmall="xsmallFlex" :md-flex-small="smallFlex" :md-flex-medium="100">
+        <md-input-container>
+          <label for="fontFamily">字型</label>
+          <md-select name="movie" id="fontFamily" :select="text.fontFamily()" @change="change('fontFamily', $event)">
+            <md-option value="cwTeXFangSong">仿宋體</md-option>
+            <md-option value="cwTeXHei">黑體</md-option>
+            <md-option value="cwTeXKai">楷體</md-option>
+            <md-option value="cwTeXMing">明體</md-option>
+            <md-option value="cwTeXYen">圓體</md-option>
+            <md-option value="Noto Sans TC">Noto Sans TC</md-option>
+          </md-select>
+        </md-input-container>
+      </md-layout>
 
-    <md-input-container>
-      <label for="fontFamily">字型</label>
-      <md-select name="movie" id="fontFamily" :select="text.fontFamily()" @change="change('fontFamily', $event)">
-        <md-option value="cwTeXFangSong">仿宋體</md-option>
-        <md-option value="cwTeXHei">黑體</md-option>
-        <md-option value="cwTeXKai">楷體</md-option>
-        <md-option value="cwTeXMing">明體</md-option>
-        <md-option value="cwTeXYen">圓體</md-option>
-        <md-option value="Noto Sans TC">Noto Sans TC</md-option>
-      </md-select>
-    </md-input-container>
+      <md-layout md-gutter="20" :md-flex-xsmall="xsmallFlex" :md-flex-small="smallFlex" :md-flex-medium="mediumFlex">
+        <md-input-container>
+          <label>文字大小</label>
+          <md-input type="number" :value="text.fontSize()" @input="change('fontSize', Number($event))"></md-input>
+        </md-input-container>
+      </md-layout>
 
-    <md-input-container>
-      <label>X 座標</label>
-      <md-input type="number" :value="text.x()" @input="change('x', Number($event))"></md-input>
-    </md-input-container>
+      <md-layout md-gutter="20" :md-flex-xsmall="xsmallFlex" :md-flex-small="smallFlex" :md-flex-medium="mediumFlex">
+        <md-input-container>
+          <label>X 座標</label>
+          <md-input type="number" :value="text.x()" @input="change('x', Number($event))"></md-input>
+        </md-input-container>
+      </md-layout>
 
-    <md-input-container>
-      <label>Y 座標</label>
-      <md-input type="number" :value="text.y()" @input="change('y', Number($event))"></md-input>
-    </md-input-container>
+      <md-layout md-gutter="20" :md-flex-xsmall="xsmallFlex" :md-flex-small="smallFlex" :md-flex-medium="mediumFlex">
+        <md-input-container>
+          <label>Y 座標</label>
+          <md-input type="number" :value="text.y()" @input="change('y', Number($event))"></md-input>
+        </md-input-container>
+      </md-layout>
 
-    <md-input-container>
-      <label>寬度</label>
-      <md-input type="number" :value="text.width()" @input="change('width', Number($event))"></md-input>
-    </md-input-container>
+      <md-layout md-gutter="20" :md-flex-xsmall="xsmallFlex" :md-flex-small="smallFlex" :md-flex-medium="mediumFlex">
+        <md-input-container>
+          <label>寬度</label>
+          <md-input type="number" :value="text.width()" @input="change('width', Number($event))"></md-input>
+        </md-input-container>
+      </md-layout>
 
-    <md-input-container>
-      <label>長度</label>
-      <md-input type="number" :value="text.height()" @input="change('height', Number($event))"></md-input>
-    </md-input-container>
+      <md-layout md-gutter="20" :md-flex-xsmall="xsmallFlex" :md-flex-small="smallFlex" :md-flex-medium="mediumFlex">
+        <md-input-container>
+          <label>長度</label>
+          <md-input type="number" :value="text.height()" @input="change('height', Number($event))"></md-input>
+        </md-input-container>
+      </md-layout>
+    </md-layout>
   </md-card-content>
 
-  <md-card-actions>
+  <!-- <md-card-actions>
     <md-button class="md-icon-button">
       <md-icon>delete_forever</md-icon>
     </md-button>
-  </md-card-actions>
+  </md-card-actions> -->
+
+  <md-dialog :md-backdrop="false" ref="colorDialog">
+    <md-dialog-content>
+      <chrome-picker style="display: inline;" v-model="colors" @change-color="change('fill', $event.hex)"></chrome-picker>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+      <md-button class="md-primary" @click.native="$refs.colorDialog.close()">關閉</md-button>
+    </md-dialog-actions>
+  </md-dialog>
 </md-card>
 </template>
 
@@ -76,6 +99,9 @@ export default {
   props: ['index', 'text'],
   data() {
     return {
+      xsmallFlex: 50,
+      smallFlex: 20,
+      mediumFlex: 20,
       colors: {
         hex: '#000000',
         a: 1,
@@ -110,8 +136,7 @@ export default {
         y: this.text.y(),
       })
     }
-  },
-  mounted() {}
+  }
 }
 </script>
 

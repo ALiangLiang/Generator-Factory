@@ -1,8 +1,8 @@
 <template>
 <div>
-  <md-layout md-gutter>
+  <md-layout :md-gutter="24">
     <md-layout v-for="generator in generators" :key="generator.id" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="33">
-      <md-card>
+      <md-card md-with-hover>
         <md-card-header>
           <div class="md-title">{{generator.name}}</div>
           <div class="md-subhead">{{generator.description}}</div>

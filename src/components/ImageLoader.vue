@@ -1,6 +1,6 @@
 <template>
 <div>
-  <md-spinner md-indeterminate ref="spinner" :class="{'display-none':isLoaded}"></md-spinner>
+  <md-spinner md-indeterminate :class="{'display-none':isLoaded}"></md-spinner>
   <img :src="src" :crossOrigin="crossOrigin" @load="imageLoaded" :class="{'display-none':!isLoaded}"></img>
 </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="app">
   <md-toolbar class="md-dense">
     <md-button class="md-icon-button" @click.native="$refs.leftSidenav.toggle()">
       <md-icon>menu</md-icon>
@@ -10,7 +10,7 @@
     </router-link>
   </md-toolbar>
 
-  <div id="app" class="container">
+  <div class="container">
     <md-layout md-align="center">
       <router-view></router-view>
     </md-layout>
@@ -61,6 +61,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-width: 960px;
+}
+
+.container {
   padding: 16px;
 }
 
