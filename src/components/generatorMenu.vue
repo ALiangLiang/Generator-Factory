@@ -14,7 +14,7 @@
         </md-card-media>
 
         <md-card-actions>
-          <md-button :href="'#/generator/' + generator.id">
+          <md-button :href="'/generator/' + generator.id">
             <md-icon>create</md-icon>
             使用產生器
           </md-button>

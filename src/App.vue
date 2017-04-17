@@ -22,13 +22,13 @@
         <h3 class="md-title">圖文產生器工廠</h3>
       </div>
       <md-list>
-        <md-list-item href="#/">
+        <md-list-item href="/">
           <md-icon>build</md-icon> <span>來去組裝產生器</span>
         </md-list-item>
-        <md-list-item href="#/generatorMenu">
+        <md-list-item href="/generatorMenu">
           <md-icon>dashboard</md-icon> <span>產生器型號目錄</span>
         </md-list-item>
-        <md-list-item href="#/productMenu">
+        <md-list-item href="/productMenu">
           <md-icon>list</md-icon> <span>各式圖文產品</span>
         </md-list-item>
       </md-list>

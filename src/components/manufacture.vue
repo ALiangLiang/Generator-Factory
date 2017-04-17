@@ -67,11 +67,11 @@ export default {
   components: {
     canvasText
   },
-  data: function() {
+  props: ['image'],
+  data() {
     return {
       MAX_WIDTH_HEIGHT: 960,
       stage: void 0,
-      image: void 0,
       name: '',
       description: '',
       isPrivate: false,
@@ -161,7 +161,7 @@ export default {
         }, (e) => this.progress = e.loaded / e.total * 100)
         .then((text) => JSON.parse(text))
         .then((data) => {
-          location.href = '#/generator/' + data.id
+          location.href = 'generator/' + data.id
         })
         .catch(function(error) {
           console.log('Request failed', error);
@@ -169,10 +169,10 @@ export default {
     }
   },
   mounted() {
-    const imageObj = this.$router.image
-    if (!imageObj) {
-      location.href = '#/'
-    }
+    const imageObj = this.image
+    // if (!imageObj) {
+    //   location.href = '/'
+    // }
     const texts = this.texts
 
     const

@@ -1,9 +1,11 @@
 <template>
 <div class="hello">
   <h1>{{ msg }}</h1>
-  <md-whiteframe md-elevation="2">
+  <md-whiteframe md-elevation="2" v-if="!image">
     <input type="file" class="dropify" accept="image/*" data-height="300" @change="loadFile" />
   </md-whiteframe>
+
+  <manufacture v-if="image" :image="image"></manufacture>
 
   <vue-disqus shortname="generator-factory" :identifier="$route.path" :url="url"></vue-disqus>
 </div>
@@ -11,14 +13,17 @@
 
 <script>
 import VueDisqus from 'vue-disqus/VueDisqus.vue'
+import manufacture from './manufacture.vue'
 export default {
   name: 'index',
   components: {
-    VueDisqus
+    VueDisqus,
+    manufacture
   },
   data() {
     return {
       msg: '歡迎使用 圖文產生器工廠',
+      image: void 0,
       url: document.location.href
     }
   },
@@ -35,8 +40,7 @@ export default {
           const img = document.createElement('img')
           img.onload = () => {
             this.image = img
-            this.$router.image = img
-            location.href = '#/manufacture'
+            // location.href = '/manufacture'
           }
           img.src = e2.target.result
         }

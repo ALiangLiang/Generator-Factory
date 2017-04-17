@@ -8,7 +8,7 @@
       </md-card-media>
 
       <md-card-actions>
-        <md-button :href="'#/product/' + product.id">查看產品</md-button>
+        <md-button :href="'/product/' + product.id">查看產品</md-button>
       </md-card-actions>
     </md-card>
   </md-layout>

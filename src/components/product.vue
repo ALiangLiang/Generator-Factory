@@ -83,7 +83,7 @@ export default {
   },
   mounted() {
     if (!this.$route.params.id)
-      location.href = '#/'
+      location.href = '/'
 
     new Clipboard('#copy-url')
 
