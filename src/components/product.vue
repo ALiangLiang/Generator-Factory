@@ -87,13 +87,13 @@ export default {
 
     new Clipboard('#copy-url')
 
-    fetch('https://aliangliang.com.tw:8787/product/' + this.$route.params.id, {
+    fetch(DOMAIN + '/api/product/' + this.$route.params.id, {
         method: 'get',
         mode: 'cors',
       })
       .then((res) => res.json())
       .then((data) => {
-        this.src = 'https://aliangliang.com.tw:8787/' + data.image
+        this.src = DOMAIN + '/api/' + data.image
       })
   }
 }

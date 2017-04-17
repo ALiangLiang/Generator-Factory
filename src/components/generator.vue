@@ -78,14 +78,12 @@ export default {
       e.target.value = this.url
     },
     generate(e) {
-      const
-        DOMAIN = 'https://aliangliang.com.tw:8787/',
-        form = new FormData()
+      const form = new FormData()
       form.append('manufactorId', this.manufactorId)
       form.append('image', dataURItoBlob(this.stage.toDataURL()))
       form.append('isPrivate', this.isPrivate)
       this.progress = 0.000001
-      futch(DOMAIN + 'generate', {
+      futch(DOMAIN + '/api/generate', {
           method: 'POST',
           mode: 'cors',
           body: form
@@ -93,7 +91,7 @@ export default {
           this.progress = e.loaded / e.total * 100
         })
         .then((text) => JSON.parse(text))
-        .then((data) => location.href = '#/product/' + data.id)
+        .then((data) => location.href = '/product/' + data.id)
         .catch(function(error) {
           console.log('Request failed', error);
         });
@@ -105,14 +103,14 @@ export default {
 
     new Clipboard('#copy-url')
 
-    fetch('https://aliangliang.com.tw:8787/generator/' + this.$route.params.id, {
+    fetch(DOMAIN + '/api/generator/' + this.$route.params.id, {
         method: 'get',
         mode: 'cors',
       })
       .then((res) => res.json())
       .then((data) => {
         const
-          imageUrl = 'https://aliangliang.com.tw:8787/' + data.image,
+          imageUrl = DOMAIN + '/api/' + data.image,
           textsJSON = data.texts
 
         this.manufactorId = this.$route.params.id

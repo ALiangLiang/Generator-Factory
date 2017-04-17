@@ -144,9 +144,7 @@ export default {
         y: 1
       })
 
-      const
-        DOMAIN = 'https://aliangliang.com.tw:8787/',
-        form = new FormData()
+      const form = new FormData()
       form.append('name', this.name)
       form.append('description', this.description)
       form.append('isPrivate', this.isPrivate)
@@ -154,7 +152,7 @@ export default {
       form.append('preview', dataURItoBlob(this.stage.toDataURL()))
       form.append('texts', JSON.stringify(this.texts.map((text) => text.toJSON())))
       this.progress = 0.000001
-      futch(DOMAIN + 'manufacture', {
+      futch(DOMAIN + '/api/manufacture', {
           method: 'POST',
           mode: 'cors',
           body: form

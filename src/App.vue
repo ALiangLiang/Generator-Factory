@@ -41,16 +41,7 @@
 import 'material-design-icons/iconfont/material-icons.css'
 export default {
   name: 'app',
-  data: function() {
-    return {
-      generators: []
-    }
-  },
-  mounted() {
-    fetch('https://www.aliangliang.com.tw:8787/generators/')
-      .then((res) => res.json())
-      .then((json) => this.generators = json)
-  }
+  mounted() {}
 }
 </script>
 

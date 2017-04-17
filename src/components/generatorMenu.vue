@@ -9,7 +9,7 @@
         </md-card-header>
 
         <md-card-media>
-          <image-loader :src="'https://aliangliang.com.tw:8787/' + generator.preview"></image-loader>
+          <image-loader :src="generator.previerSrc"></image-loader>
           <md-ink-ripple></md-ink-ripple>
         </md-card-media>
 
@@ -38,9 +38,13 @@ export default {
     }
   },
   mounted() {
-    fetch('https://www.aliangliang.com.tw:8787/generators/')
+    fetch(DOMAIN + '/api/generators/')
       .then((res) => res.json())
-      .then((json) => this.generators = json)
+      .then((json) => this.generators = json
+        .map((generator) => {
+          generator.previerSrc = DOMAIN + '/api/' + generator.preview
+          return generator
+        }))
   }
 }
 </script>

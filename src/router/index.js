@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 import Router from 'vue-router'
 import VueMaterial from 'vue-material'
@@ -8,6 +9,7 @@ import Product from '@/components/product'
 import GeneratorMenu from '@/components/generatorMenu'
 import ProductMenu from '@/components/productMenu'
 
+window.DOMAIN = 'https://factory.aliangliang.com.tw'
 Vue.use(Router)
 Vue.use(VueMaterial)
 
