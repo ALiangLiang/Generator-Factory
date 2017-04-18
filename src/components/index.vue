@@ -1,6 +1,7 @@
 <template>
 <div class="hello">
   <div v-if="!image">
+    <md-image md-src="/static/logo.png"></md-image>
     <h1>{{ msg }}</h1>
     <md-whiteframe md-elevation="2">
       <input type="file" class="dropify" accept="image/*" data-height="300" @change="loadFile" />
