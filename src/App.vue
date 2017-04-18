@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import 'material-design-icons/iconfont/material-icons.css'
 export default {
   name: 'app',
   mounted() {}
@@ -62,5 +61,8 @@ export default {
 .md-sidenav-content {
   top: 0px;
   position: fixed !important;
+}
+</style>
+nt;
 }
 </style>

@@ -1,7 +1,11 @@
 
 import Vue from 'vue'
 import Router from 'vue-router'
+// import Vuetify from 'vuetify'
+// import 'vuetify/dist/vuetify.min.css'
+import 'material-design-icons/iconfont/material-icons.css'
 import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.css'
 import index from '@/components/index'
 // import Manufacture from '@/components/manufacture'
 import Generator from '@/components/generator'
@@ -10,8 +14,9 @@ import GeneratorMenu from '@/components/generatorMenu'
 import ProductMenu from '@/components/productMenu'
 
 window.DOMAIN = 'https://factory.aliangliang.com.tw'
-Vue.use(Router)
+// Vue.use(Vuetify)
 Vue.use(VueMaterial)
+Vue.use(Router)
 
 export default new Router({
   mode: 'history',

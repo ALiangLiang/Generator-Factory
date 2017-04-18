@@ -12,6 +12,9 @@
 </template>
 
 <script>
+import $ from 'jquery'
+import dropify from 'dropify'
+import 'dropify/dist/css/dropify.min.css'
 import VueDisqus from 'vue-disqus/VueDisqus.vue'
 import manufacture from './manufacture.vue'
 export default {
