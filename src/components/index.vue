@@ -1,7 +1,7 @@
 <template>
 <div class="hello">
-  <h1>{{ msg }}</h1>
   <div v-if="!image">
+    <h1>{{ msg }}</h1>
     <md-whiteframe md-elevation="2">
       <input type="file" class="dropify" accept="image/*" data-height="300" @change="loadFile" />
     </md-whiteframe>
@@ -74,8 +74,12 @@ export default {
     })
 
     document.addEventListener('paste', (e) => {
-      const file = e.clipboardData.items[0].getAsFile()
-      this.readFile(file)
+      const items = e.clipboardData.items
+      if (items.length !== 1)
+        return
+      const file = items[0]
+      if (file.type.match(/image.*/))
+        this.readFile(file.getAsFile())
     })
   }
 }
