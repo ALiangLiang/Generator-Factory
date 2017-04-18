@@ -160,17 +160,6 @@ export default {
 }
 
 .on-top {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-}
-</style>
-adow: rgba(0, 0, 0, 0.0745098) 0px 10px 20px;
-  background-color: #eeeeee;
-}
-
-.on-top {
   position: fixed;
   top: 0px;
   left: 0px;
@@ -178,4 +167,3 @@ adow: rgba(0, 0, 0, 0.0745098) 0px 10px 20px;
   z-index: 99999;
 }
 </style>
-yle>

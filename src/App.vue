@@ -63,6 +63,3 @@ export default {
   position: fixed !important;
 }
 </style>
-nt;
-}
-</style>
