@@ -1,9 +1,14 @@
 <template>
 <div class="hello">
   <h1>{{ msg }}</h1>
-  <md-whiteframe md-elevation="2" v-if="!image">
-    <input type="file" class="dropify" accept="image/*" data-height="300" @change="loadFile" />
-  </md-whiteframe>
+  <div v-if="!image">
+    <md-whiteframe md-elevation="2">
+      <input type="file" class="dropify" accept="image/*" data-height="300" @change="loadFile" />
+    </md-whiteframe>
+    <span class="md-display-3">
+
+    </span>
+  </div>
 
   <manufacture v-if="image" :image="image"></manufacture>
 
@@ -36,6 +41,9 @@ export default {
       if (files.length !== 1)
         return
       const file = files[0]
+      this.readFile(file)
+    },
+    readFile(file) {
       if (file.type.match(/image.*/)) {
         const reader = new FileReader();
 
@@ -55,12 +63,20 @@ export default {
   mounted() {
     $('.dropify').dropify({
       messages: {
-        'default': '請將底圖拖曳進來哦~ 或是點它上傳',
+        'default': `如何開始?
+        <br>1. 將底圖拖曳進來~
+        <br>2. 或是點它上傳
+        <br>3. ctrl+V 貼上圖片`,
         'replace': 'Drag and drop or click to replace',
         'remove': '移除',
         'error': '阿哩? 好像出了點錯誤'
       }
-    });
+    })
+
+    document.addEventListener('paste', (e) => {
+      const file = e.clipboardData.items[0].getAsFile()
+      this.readFile(file)
+    })
   }
 }
 </script>
