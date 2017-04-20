@@ -1,53 +1,44 @@
 <template>
 <div class="manufacture">
   <div class="on-top" :style="(progress === 0)?'display:none;':''">
-    <md-progress class="md-accent" :md-progress="progress"></md-progress>
+    <v-progress-linear style="margin:0px" v-model="progress"></v-progress-linear>
   </div>
 
-  <md-layout md-gutter="16">
-    <md-layout md-align="center" md-flex-xsmall="100" md-flex-small="100" md-flex-medium="60" md-flex-large="70">
-      <div id="container"></div>
+  <div id="container"></div>
 
-      <md-input-container :class="(name === '')?'md-input-invalid':''">
-        <label>產生器名稱</label>
-        <md-input type="text" v-model="name" required></md-input>
-      </md-input-container>
+  <v-text-field label="產生器名稱" v-model="name" required></v-text-field>
 
-      <md-input-container>
-        <label>簡介</label>
-        <md-textarea v-model="description"></md-textarea>
-      </md-input-container>
+  <v-text-field label="簡介" v-model="description" multi-line></v-text-field>
 
-      <md-checkbox v-model="isPrivate">不公開產生器 (只有擁有連結的人可以使用)</md-checkbox>
+  <v-checkbox label="不公開產生器 (只有擁有連結的人可以使用)`" primary v-model="isPrivate" light />
 
-      <md-input-container>
-        <label>縮放</label>
-        <md-input type="number" v-model="scaleRate" @input="scale"></md-input>
-      </md-input-container>
+  <v-text-field type="number" label="縮放" v-model="scaleRate" @input="scale"></v-text-field>
 
-      <md-button class="md-raised md-primary" @click.native="createGenerator">
-        <md-icon>build</md-icon>組裝產生器
-      </md-button>
-    </md-layout>
+  <v-btn primary class="btn--light-flat-focused" v-bind:loading="isUploading" v-bind:disabled="isUploading" @click.native="createGenerator">
+    <v-icon>build</v-icon>組裝產生器
+  </v-btn>
 
-    <md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="40" md-flex-large="30" md-column>
-      <md-card>
-        <md-layout md-gutter class="default-flex">
-          <md-button class="md-raised md-primary" @click.native="createTextbox">
-            <md-icon @click="createTextbox">text_fields</md-icon>新增文字方塊
-          </md-button>
-        </md-layout>
 
-        <md-layout md-gutter class="default-flex">
-          <md-tabs ref="textTabNavbar">
-            <md-tab v-for="(text, i) in texts" :key="i" :md-label="'文字 ' + (i + 1)">
-              <canvas-text :index="i" :text="text"></canvas-text>
-            </md-tab>
-          </md-tabs>
-        </md-layout>
-      </md-card>
-    </md-layout>
-  </md-layout>
+  <v-card>
+    <v-card-row actions>
+      <v-card-title>
+        <v-btn primary class="btn--light-flat-focused" @click.native="createTextbox">
+          <v-icon>text_fields</v-icon>新增文字方塊
+        </v-btn>
+      </v-card-title>
+    </v-card-row>
+
+    <v-card-row actions>
+      <v-tabs id="mobile-tabs-1" grow scroll-bars>
+        <v-tab-item v-for="(text, i) in texts" :key="i" v-bind:href="'#text-tabs-1-' + i" ripple slot="activators">
+          文字 {{i + 1}}
+        </v-tab-item>
+        <v-tab-content v-for="(text, i) in texts" :key="i" v-bind:id="'text-tabs-1-' + i" slot="content">
+          <canvas-text :index="i" :text="text"></canvas-text>
+        </v-tab-content>
+      </v-tabs>
+    </v-card-row>
+  </v-card>
 
   <md-snackbar md-position="bottom center" ref="snackbar" md-duration="4000">
     <span>{{snackbarText}}</span>
@@ -78,7 +69,8 @@ export default {
       scaleRate: 1,
       texts: [],
       progress: 0,
-      snackbarText: ''
+      snackbarText: '',
+      isUploading: false
     }
   },
   methods: {

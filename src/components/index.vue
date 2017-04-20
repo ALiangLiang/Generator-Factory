@@ -1,14 +1,10 @@
 <template>
 <div class="hello">
   <div v-if="!image">
-    <md-image md-src="/static/logo.png"></md-image>
-    <h1>{{ msg }}</h1>
-    <md-whiteframe md-elevation="2">
-      <input type="file" class="dropify" accept="image/*" data-height="300" @change="loadFile" />
-    </md-whiteframe>
-    <span class="md-display-3">
-
-    </span>
+    <img src="/static/logo.png"></img>
+    <br>
+    <span class="display-2">{{ msg }}</span>
+    <input type="file" class="dropify elevation-3" accept="image/*" data-height="300" @change="loadFile" />
   </div>
 
   <manufacture v-if="image" :image="image"></manufacture>

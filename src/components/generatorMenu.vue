@@ -1,48 +1,51 @@
 <template>
-<div>
-  <md-layout :md-gutter="24">
-    <md-layout v-for="generator in generators" :key="generator.id" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="33">
-      <md-card md-with-hover>
-        <md-card-header>
-          <div class="md-title">{{generator.name}}</div>
-          <div class="md-subhead">{{generator.description}}</div>
-        </md-card-header>
-
-        <md-card-media>
-          <image-loader :src="generator.previerSrc"></image-loader>
-          <md-ink-ripple></md-ink-ripple>
-        </md-card-media>
-
-        <md-card-actions>
-          <md-button :href="'/generator/' + generator.id">
-            <md-icon>create</md-icon>
-            使用產生器
-          </md-button>
-        </md-card-actions>
-      </md-card>
-    </md-layout>
-  </md-layout>
-</div>
+<v-container fluid="fluid">
+  <v-card class="ma-5" v-for="generator in generators" :key="generator.id" hover>
+    <v-card-row :class="generator.mainColor">
+      <v-card-title>
+        <span class="white--text">{{generator.name}}</span>
+      </v-card-title>
+    </v-card-row>
+    <v-card-row :img="generator.previerSrc" height="300px"></v-card-row>
+    <v-card-text class="blue-grey darken-3 white--text">
+      <div v-text="generator.description"></div>
+    </v-card-text>
+    <v-card-row actions :class="generator.mainColor + ' mt-0'">
+      <v-btn tag="a" :href="'/generator/' + generator.id" flat class="white--text">
+        <v-icon>create</v-icon>使用產生器
+      </v-btn>
+    </v-card-row>
+  </v-card>
+</v-container>
 </template>
 
 <script>
-import ImageLoader from './ImageLoader.vue'
+import mdColors from './md-colors.json'
+import nearestColor from './nearestColor.js'
 export default {
   name: 'generatorMenu',
-  components: {
-    ImageLoader
-  },
   data: function() {
     return {
       generators: []
     }
   },
   mounted() {
+    const colorThief = new ColorThief()
+
     fetch(DOMAIN + '/api/generators/')
       .then((res) => res.json())
       .then((json) => this.generators = json
         .map((generator) => {
           generator.previerSrc = DOMAIN + generator.preview
+          generator.mainColor = ''
+          const img = new Image
+          img.crossOrigin = 'Anonymous'
+          img.onload = () => {
+            const color = '#' + colorThief.getPalette(img)[0]
+              .map((n) => n.toString(16)).join('')
+            generator.mainColor = nearestColor(color, nearestColor.mapColors(mdColors)).name
+          }
+          img.src = generator.previerSrc
           return generator
         }))
   }

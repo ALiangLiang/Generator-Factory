@@ -1,33 +1,26 @@
 <template>
 <div class="generator">
   <div class="on-top" :style="(progress === 0)?'display:none;':''">
-    <md-progress class="md-accent" :md-progress="progress"></md-progress>
+    <v-progress-linear style="margin:0px" v-model="progress"></v-progress-linear>
   </div>
 
-  <span class="md-display-3">{{name}}</span>
+  <span class="display-3">{{name}}</span>
   <br>
   <span class="md-subheading">{{description}}</span>
   <br>
-  <md-checkbox v-model="isPrivate" :disabled="alwaysPrivate">不公開圖文 (只有擁有連結的人可以看得到)</md-checkbox>
+  <v-checkbox label="不公開產生器 (只有擁有連結的人可以使用)`" primary v-model="isPrivate" light />
 
   <div id="container"></div>
 
-  <md-input-container>
-    <label>複製連結</label>
-    <md-input id="url-input" :value="url" @click.native="selectAll" @input.native="fixedText"></md-input>
-    <md-button id="copy-url" class="md-icon-button" :data-clipboard-text="url" @click.native="selectAll">
-      <md-icon>content_copy</md-icon>
-      <md-tooltip md-direction="bottom">複製</md-tooltip>
-    </md-button>
-  </md-input-container>
+  <v-text-field id="url-input" label="複製連結" :value="url" @click.native="selectAll" @input.native="fixedText"></v-text-field>
 
-  <md-button class="md-raised md-primary" target="_blank" :href="'https://www.facebook.com/share.php?u=' + encodeURIComponent(url)">
-    <md-icon>share</md-icon>分享至臉書
-  </md-button>
+  <v-btn primary class="btn--light-flat-focused" target="_blank" :href="'https://www.facebook.com/share.php?u=' + encodeURIComponent(url)">
+    <v-icon>share</v-icon>分享至臉書
+  </v-btn>
 
-  <md-button class="md-raised md-primary" @click.native="generate">
-    <md-icon>create</md-icon>產生圖文
-  </md-button>
+  <v-btn primary class="btn--light-flat-focused" v-bind:loading="isUploading" v-bind:disabled="isUploading" @click.native="generate">
+    <v-icon>create</v-icon>產生圖文
+  </v-btn>
 
   <div class="row">
     <generator-text v-for="(text, i) in texts" :key="i" :index="i" :text="text"></generator-text>

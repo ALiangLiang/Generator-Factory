@@ -1,45 +1,71 @@
 <template>
-<div id="app">
-  <md-toolbar class="md-dense">
-    <md-button class="md-icon-button" @click.native="$refs.leftSidenav.toggle()">
-      <md-icon>menu</md-icon>
-    </md-button>
+<v-app id="app" class="elevation-1" top-toolbar left-fixed-sidebar>
+  <header>
+    <v-toolbar class="orange">
+      <v-toolbar-side-icon @click.native.stop="isSidebarOpened = !isSidebarOpened"></v-toolbar-side-icon>
+      <v-toolbar-title>圖文產生器工廠</v-toolbar-title>
+      <v-toolbar-items class="hidden-md-and-down">
+        <v-toolbar-item ripple>來去組裝產生器</v-toolbar-item>
+        <v-toolbar-item ripple>產生器型號目錄</v-toolbar-item>
+        <v-toolbar-item ripple>各式圖文產品</v-toolbar-item>
+      </v-toolbar-items>
+    </v-toolbar>
+  </header>
 
-    <router-link to="/" tag="h2">
-      <span>圖文產生器工廠</span>
-    </router-link>
-  </md-toolbar>
+  <main>
 
-  <div class="container">
-    <md-layout md-align="center">
-      <router-view></router-view>
-    </md-layout>
-  </div>
+    <div class="container">
+      <md-layout md-align="center">
+        <router-view></router-view>
+      </md-layout>
+    </div>
 
-  <md-sidenav class="md-left" ref="leftSidenav">
-    <md-toolbar class="md-large">
-      <div class="md-toolbar-container">
-        <h3 class="md-title">圖文產生器工廠</h3>
-      </div>
-      <md-list>
-        <md-list-item href="/">
-          <md-icon>build</md-icon> <span>來去組裝產生器</span>
-        </md-list-item>
-        <md-list-item href="/generatorMenu">
-          <md-icon>dashboard</md-icon> <span>產生器型號目錄</span>
-        </md-list-item>
-        <md-list-item href="/productMenu">
-          <md-icon>list</md-icon> <span>各式圖文產品</span>
-        </md-list-item>
-      </md-list>
-    </md-toolbar>
-  </md-sidenav>
-</div>
+    <v-sidebar v-model="isSidebarOpened" fixed>
+      <v-list dense>
+        <v-list-item>
+          <v-list-tile href="/">
+            <v-list-tile-avatar>
+              <!-- <v-icon>{{ item.avatar }}</v-icon> -->
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>來去組裝產生器</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list-item>
+        <v-list-item>
+          <v-list-tile href="/generatorMenu">
+            <v-list-tile-avatar>
+              <!-- <v-icon>{{ item.avatar }}</v-icon> -->
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>產生器型號目錄</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list-item>
+        <v-list-item>
+          <v-list-tile href="/productMenu">
+            <v-list-tile-avatar>
+              <!-- <v-icon>{{ item.avatar }}</v-icon> -->
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>各式圖文產品</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list-item>
+      </v-list>
+    </v-sidebar>
+  </main>
+</v-app>
 </template>
 
 <script>
 export default {
   name: 'app',
+  data() {
+    return {
+      isSidebarOpened: false
+    }
+  },
   mounted() {}
 }
 </script>
